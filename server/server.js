@@ -4,6 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const {generatemessage,generatelocationmessage} = require('./utils/message');
+const {isRealSting} = require('./utils/validation');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3001;
 var app = express();
@@ -13,15 +14,27 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log('New user connected');
+  	//console.log('New user connected');
 
-  socket.emit('clientmessage',generatemessage('Admin','Welcome to chat app'));
   
-  socket.broadcast.emit('clientmessage',generatemessage('Admin','New use join'));
 
-socket.on('createlocationmsg',(coords) =>{
- io.emit('clientlocationmessage',generatelocationmessage('Admin',coords.latitude,coords.longitude));
-});
+  	socket.on('join',(params,callback)=>{
+  		if(!isRealSting(params.name) || !isRealSting(params.room)){
+  			callback('name or room name require');
+  		}
+  		socket.join(params.room);
+
+  		socket.emit('clientmessage',generatemessage('Admin','Welcome to chat app'));
+  
+  		socket.broadcast.to(params.room).emit('clientmessage',generatemessage('Admin', `${params.name} has joined`));
+
+  		callback();
+  	});
+
+
+	socket.on('createlocationmsg',(coords) =>{
+ 		io.emit('clientlocationmessage',generatelocationmessage('Admin',coords.latitude,coords.longitude));
+	});
 
 
   socket.on('message',(message,callback)=>{
