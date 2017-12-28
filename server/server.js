@@ -24,11 +24,11 @@ socket.on('createlocationmsg',(coords) =>{
 });
 
 
-  socket.on('message',(message)=>{
+  socket.on('message',(message,callback)=>{
    console.log('you have a new message:',message);
   
   	io.emit('clientmessage',generatemessage(message.from,message.text));
-
+    callback();
 
   });
 
