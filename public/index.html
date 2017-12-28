@@ -1,9 +1,25 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
 </head>
+
 <body>
-	<p> Welcome to Chat app </p>
-</body> 
+  <p>Welcome to the chat app</p>
+
+  <ol id="messages"> </ol>
+
+<form id='message-form'>
+	<input type="text" name="message"/>
+	<button>Send</button>
+
+</form>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/lib/jquery-3.2.1.min.js"> </script>  
+  <script src="/js/index.js"> </script>
+
+</body>
+
 </html>
