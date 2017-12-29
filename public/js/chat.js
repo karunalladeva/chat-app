@@ -33,6 +33,16 @@ var socket = io();
       console.log('Disconnected from server');
     });
 
+    socket.on('updateuserlist',function(users){
+      // console.log('user list',users);
+      var ol=jQuery('<ol></ol>');
+
+      users.forEach(function(user){
+        ol.append(jQuery('<li></li>').text(user));
+      });
+      jQuery('#users').html(ol);
+    });
+
    socket.on('clientmessage',(message)=>{
 
    	var formattime = moment(message.createdAt).format('h:mm a'); 
@@ -102,7 +112,7 @@ var socket = io();
     	e.preventDefault();
 
     	socket.emit('message',{
-    		from : 'user',
+    		// from : 'user',
     		text : messageinput.val()
     	},function(){
     		messageinput.val('');
