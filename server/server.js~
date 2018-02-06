@@ -15,7 +15,7 @@ var server = http.createServer(app);
 var io = socketIO(server);
 var users = new Users();
 
-//ok
+
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
